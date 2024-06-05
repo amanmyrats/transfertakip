@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Agency, Taseron
+
+
+admin.site.register(Agency)
+admin.site.register(Taseron)

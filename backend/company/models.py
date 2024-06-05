@@ -17,7 +17,7 @@ class Reservation(models.Model):
     is_nakit = models.BooleanField(default=False)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     currency = models.ForeignKey('Currency', on_delete=models.DO_NOTHING)
-    comission = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    agency_comission = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     reservation_date = models.DateField(default=timezone.now().date())
     transfer_type = models.CharField(max_length=50, choices=TRANSFER_TYPE_CHOICES, default='ARR')
@@ -37,20 +37,29 @@ class Reservation(models.Model):
 
     is_my_driver = models.BooleanField(default=True)
     my_driver = models.ForeignKey('Driver', on_delete=models.DO_NOTHING, blank=True, null=True)
-    car = models.ForeignKey('Car', on_delete=models.CASCADE)
+    car = models.ForeignKey('Car', on_delete=models.CASCADE, blank=True, null=True)
 
     taseron = models.ForeignKey(Taseron, on_delete=models.DO_NOTHING, blank=True, null=True)
-    taseron_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    taseron_currency = models.ForeignKey('Currency', on_delete=models.DO_NOTHING, related_name='taseron_currency')
+    taseron_hakedis = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    taseron_currency = models.ForeignKey('Currency', on_delete=models.DO_NOTHING, related_name='taseron_currency', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.transfer_date} - [{self.pickup_short}-{self.dest_short}] - {self.transfer_time} , Nakit={self.is_nakit}"
 
 
 class Currency(models.Model):
     code = models.CharField(max_length=3, unique=True)
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.code
+
 
 class CarType(models.Model):
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class Car(models.Model):
@@ -58,12 +67,21 @@ class Car(models.Model):
     brand = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f"{self.plate} - {self.brand}-{self.model}"
+
 
 class Driver(models.Model):
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class Expense(models.Model):
     name = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     currency = models.ForeignKey('Currency', on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return f"{self.name} - {self.amount} {self.currency}"

@@ -6,6 +6,8 @@ from .views import (
 )
 
 
+app_name = 'company'
+
 router = routers.DefaultRouter()
 router.register(r'reservations', ReservationModelViewSet)
 
