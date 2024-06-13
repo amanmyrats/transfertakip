@@ -1,0 +1,38 @@
+<form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+
+<p-dropdown 
+    [options]="agencies"
+    formControlName="agency"
+    optionLabel="name"
+    optionValue="id"
+    [filter]="true"
+    filterBy="name" 
+    [showClear]="true"
+    placeholder="Select a Agency">
+        <ng-template let-agency pTemplate="item">
+            <div class="flex align-items-center gap-2">
+                <div>{{ agency.name }}</div>
+            </div>
+        </ng-template>
+</p-dropdown>
+
+    <!-- Create a elegant nice form for my Reservation model using primeng form components,include all fields above -->
+    <div class="p-grid p-fluid">
+        <div class="p-col-12 p-md-6 p-lg-4">
+            <div class="p-inputgroup">
+                <span class="p-float-label">
+                    <input id="amount" pInputText type="text" pInputNumber formControlName="amount" />
+                    <label for="amount">Amount</label>
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- submit button here -->
+    <div class="p-grid p-fluid">
+        <div class="p-col-12 p-md-6 p-lg-4">
+            <button pButton type="submit" class="p-button-success">Submit</button>
+        </div>
+    </div>
+    
+    </form>
