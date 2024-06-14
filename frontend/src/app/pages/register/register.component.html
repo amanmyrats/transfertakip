@@ -1,0 +1,29 @@
+<div class="register-page">
+    <div class="register-container">
+      <h1>Kayıt Ol</h1>
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="username">Kullanıcı Adı</label>
+          <input id="username" type="text" pInputText [(ngModel)]="username" />
+        </div>
+        <div class="p-field">
+          <label for="email">E-posta</label>
+          <input id="email" type="email" pInputText [(ngModel)]="email" />
+        </div>
+        <div class="p-field">
+          <label for="password">Şifre</label>
+          <input id="password" type="password" pInputText [(ngModel)]="password" />
+        </div>
+        <div class="p-field">
+          <label for="confirmPassword">Şifreyi Onaylayın</label>
+          <input id="confirmPassword" type="password" pInputText [(ngModel)]="confirmPassword" />
+        </div>
+        <button pButton type="button" label="Kayıt Ol" class="p-button-raised p-button-primary" (click)="onRegister()"></button>
+      </div>
+      <div class="links">
+        <button pButton type="button" label="Zaten üyeyseniz giriş yapınız." class="p-button-link" (click)="onGotoLogin()"></button>
+        <button pButton type="button" label="Ana Sayfaya Dön" class="p-button-link" (click)="onBackToMain()"></button>
+      </div>
+    </div>
+  </div>
+  
