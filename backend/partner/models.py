@@ -1,9 +1,13 @@
 from django.db import models
 from django.db.models import Sum
 
+# from company.models import Company
+
 
 class Agency(models.Model):
+    company = models.ForeignKey('company.Company', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
+    
 
     def __str__(self):
         return self.name
@@ -28,6 +32,7 @@ class Agency(models.Model):
     
 
 class Taseron(models.Model):
+    company = models.ForeignKey('company.Company', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
 
     def __str__(self):

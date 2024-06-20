@@ -4,6 +4,17 @@ from django.db import models
 from partner.models import Agency, Taseron
 
 
+class Company(models.Model):
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    contact_email = models.EmailField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+    
+
 class Reservation(models.Model):
 
     TRANSFER_TYPE_CHOICES = (
@@ -13,6 +24,7 @@ class Reservation(models.Model):
         ('TUR', 'Tur'),
     )
 
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
     is_nakit = models.BooleanField(default=False)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -43,35 +55,75 @@ class Reservation(models.Model):
     taseron_hakedis = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     taseron_currency = models.ForeignKey('Currency', on_delete=models.DO_NOTHING, related_name='taseron_currency', blank=True, null=True)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return f"{self.transfer_date} - [{self.pickup_short}-{self.dest_short}] - {self.transfer_time} , Nakit={self.is_nakit}"
 
 
-class Currency(models.Model):
+
+class DefaultCurrency(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     code = models.CharField(max_length=3, unique=True)
     name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+
+    def __str__(self):
+        return self.code
+    
+
+class Currency(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    code = models.CharField(max_length=3, unique=True)
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
 
     def __str__(self):
         return self.code
 
 
-class CarType(models.Model):
+class DefaultCarType(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+
+    def __str__(self):
+        return self.name
+    
+
+class CarType(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
 
     def __str__(self):
         return self.name
 
 
 class Car(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     plate = models.CharField(max_length=255)
     brand = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
 
     def __str__(self):
         return f"{self.plate} - {self.brand}-{self.model}"
 
 
 class Driver(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -79,9 +131,36 @@ class Driver(models.Model):
 
 
 class Expense(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     currency = models.ForeignKey('Currency', on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return f"{self.name} - {self.amount} {self.currency}"
+
+
+
+class SubscriptionType(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    price_month = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    price_year = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Subscription: {self.name}"
+    
+
+class Subscription(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    subscription_type = models.ForeignKey(SubscriptionType, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    status = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Subscription for {self.company.name}:{self.subscription_type.name}"

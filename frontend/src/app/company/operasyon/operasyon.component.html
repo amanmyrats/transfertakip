@@ -1,1 +1,30 @@
-<p>operasyon works!</p>
+<p-table [value]="reservations" styleClass="p-datatable-striped p-datatable-gridlines" [rows]="20" [loading]="loading" [rowHover]="true"  >
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Id</th>
+            <th>Passenger</th>
+            <th>Date</th>
+            <th>Flight</th>
+            <th>Pick up</th>
+            <th>Destination</th>
+            <th>Driver</th>
+            <th>Amount</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-reservation>
+        <tr>
+            <td>{{reservation.id}}</td>
+            <td>{{reservation.passenger_name}}</td>
+            <td>{{reservation.transfer_date}}</td>
+            <td>{{reservation.flight_number}}</td>
+            <td>{{reservation.pickup_short}} - {{reservation.pickup_full}}</td>
+            <td>{{reservation.dest_short}} - {{reservation.dest_full}}</td>
+            
+            <td>
+                    {{reservation.my_driver?.name}} / 
+                    {{reservation.taseron?.name}}
+            </td>
+            <td>{{reservation.amount}}</td>
+        </tr>
+    </ng-template>
+</p-table>
