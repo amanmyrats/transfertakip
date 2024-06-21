@@ -8,6 +8,7 @@ class Company(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     contact_email = models.EmailField()
+    contact_phone = models.Phone()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -154,11 +155,16 @@ class SubscriptionType(models.Model):
     
 
 class Subscription(models.Model):
+    STATUS_CHOICES = (
+        ('TRIAL', 'Deneme'), 
+        ('ACTIVE', 'Aktif'),
+        ('ENDED', 'Bitti')
+    )
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     subscription_type = models.ForeignKey(SubscriptionType, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='TRIAL')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

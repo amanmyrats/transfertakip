@@ -1,28 +1,29 @@
 <div class="register-page">
     <div class="register-container">
       <h1>Kayıt Ol</h1>
-      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <form [formGroup]="companyForm" (ngSubmit)="onRegister()">
       <div class="p-fluid">
         <div class="p-field">
           <label for="company_name">Şirket Adı *</label>
-          <input id="company_name" type="text" pInputText formControlName="company_name" />
+          <input id="company_name" type="text" pInputText formControlName="name" />
         </div>
+
         <div class="p-field">
           <label for="owner_full_name">Yetkili Kişi *</label>
-          <input id="owner_full_name" type="text" pInputText formControlName="owner_full_name" />
+          <input id="owner_full_name" type="text" pInputText formControlName="owner.first_name" />
         </div>
         <div class="p-field">
           <label for="phone">Telefon *</label>
-          <input id="phone" type="text" pInputText formControlName="phone" />
+          <input id="phone" type="text" pInputText formControlName="contact_phone" />
         </div>
         <div class="p-field">
           <label for="email">E-posta *</label>
-          <input id="email" type="email" pInputText formControlName="email" />
+          <input id="email" type="email" pInputText formControlName="contact_email" />
         </div>
         <div class="p-field">
           <label for="password">Abonelik türü *</label>
             <p-dropdown 
-            formControlName="subscription_type" 
+            formControlName="subscription.subscription_type" 
             [options]="subscriptionTypes"
             optionLabel="name"
             placeholder="Abonelik türünü seçiniz" />

@@ -6,6 +6,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SubscriptionType } from '../../company/models/subscription-type.model';
 import { SubscriptionTypeService } from '../../company/services/subscription-type.service';
 import {  DropdownModule } from 'primeng/dropdown';
+import { CompanyService } from '../../company/services/company.service';
+import { Company } from '../../company/models/company.model';
 
 @Component({
   selector: 'app-register',
@@ -22,27 +24,48 @@ import {  DropdownModule } from 'primeng/dropdown';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  registerForm: FormGroup;
+  companyForm: FormGroup;
+  owner_form: FormGroup;
+  subscription_form: FormGroup;
   subscriptionTypes: SubscriptionType[] = [];
 
   constructor(
     private router: Router, 
     private fb: FormBuilder,
     private subscriptionTypeService: SubscriptionTypeService,
+    private companyService: CompanyService,
   ) { 
-    this.registerForm = this.fb.group({
-      company_name: ['', Validators.required],
-      owner_full_name: ['', Validators.required],
-      phone: ['', Validators.required],
-      email: ['', Validators.required],
-      subscription_type: [''],
+
+    this.owner_form = this.fb.group({
+      first_name: ['', Validators.required]
+    });
+    this.subscription_form = this.fb.group({
+      subscription_type: ['', Validators.required]
+    });
+
+    this.companyForm = this.fb.group({
+      name: ['', Validators.required],
+      owner: this.owner_form,
+      contact_phone: ['', Validators.required],
+      contact_email: ['', Validators.required],
+      subscription: this.subscription_form,
     });
   }
 
   onRegister() {
-    if (this.registerForm.valid) {
+    if (this.companyForm.valid) {
       // Handle registration logic here
-      console.log('RegistrationForm:', this.registerForm.value);
+      console.log('RegistrationForm:', this.companyForm.value);
+      this.companyService.createTrialCompany(this.companyForm.value).subscribe({
+        next: (company: Company) => {
+          console.log('Company trial has been created successfully');
+          console.log(company);
+        }, 
+        error: (err: any) => {
+          console.log("Error happened when creating trial company");
+          console.log(err);
+        }
+      });
 
     } else {
       console.error('Passwords do not match');
