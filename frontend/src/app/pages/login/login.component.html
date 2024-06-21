@@ -1,17 +1,19 @@
 <div class="login-page">
-    <div class="login-container">
-      <h1>Giriş Yap</h1>
-      <div class="p-fluid">
+  <div class="login-container">
+    <h1>Giriş Yap</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="p-fluid">
         <div class="p-field">
           <label for="username">Kullanıcı Adı</label>
-          <input id="username" type="text" pInputText [(ngModel)]="username" />
+          <input id="username" type="text" pInputText formControlName="username" />
         </div>
         <div class="p-field">
           <label for="password">Şifre</label>
-          <input id="password" type="password" pInputText [(ngModel)]="password" />
+          <input id="password" type="password" pInputText formControlName="password" />
         </div>
-        <button pButton type="button" label="Giriş Yap" class="p-button-raised p-button-primary" (click)="onLogin()"></button>
+        <button pButton type="submit" label="Giriş Yap" class="p-button-raised p-button-primary"></button>
       </div>
+    </form>
       <div class="links">
         <button pButton type="button" label="Üye Değilseniz Kayıt Olun" class="p-button-link" (click)="onRegister()"></button>
         <button pButton type="button" label="Ana Sayfaya Dön" class="p-button-link" (click)="onBackToMain()"></button>

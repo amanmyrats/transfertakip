@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,22 +12,52 @@ import { InputTextModule } from 'primeng/inputtext';
     InputTextModule,
     ButtonModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
-
-  username: string = '';
-  password: string = '';
-
+export class LoginComponent implements OnInit{
+  loginForm : FormGroup;
+  
   constructor(
-    private router: Router
-  ) { }
-  onLogin() {
-    // Handle login logic here
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
+    private router: Router, 
+    private authService: AuthService, 
+    private fb: FormBuilder,
+  ) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
+
+  ngOnInit() {
+    // Check if user is already logged in
+    if (this.authService.isLoggedIn()) {
+      // Redirect to company page
+      console.log('Redirect to company page');
+      this.router.navigate(['/company']);
+    }
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.authService.login(
+        this.loginForm.controls['username'].value, 
+        this.loginForm.controls['password'].value).subscribe((success) => {
+        if (success) {
+          // Redirect to company page
+          console.log('Redirect to company page');
+          this.router.navigate(['/company']);
+        } else {
+          // Show error message
+          console.log('Login failed');
+        }
+      });
+    } else {
+      // Show error message
+      console.log('Invalid form');
+    }
   }
 
   onRegister() {

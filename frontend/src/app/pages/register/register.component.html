@@ -1,25 +1,36 @@
 <div class="register-page">
     <div class="register-container">
       <h1>Kayıt Ol</h1>
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
       <div class="p-fluid">
         <div class="p-field">
-          <label for="username">Kullanıcı Adı</label>
-          <input id="username" type="text" pInputText [(ngModel)]="username" />
+          <label for="company_name">Şirket Adı *</label>
+          <input id="company_name" type="text" pInputText formControlName="company_name" />
         </div>
         <div class="p-field">
-          <label for="email">E-posta</label>
-          <input id="email" type="email" pInputText [(ngModel)]="email" />
+          <label for="owner_full_name">Yetkili Kişi *</label>
+          <input id="owner_full_name" type="text" pInputText formControlName="owner_full_name" />
         </div>
         <div class="p-field">
-          <label for="password">Şifre</label>
-          <input id="password" type="password" pInputText [(ngModel)]="password" />
+          <label for="phone">Telefon *</label>
+          <input id="phone" type="text" pInputText formControlName="phone" />
         </div>
         <div class="p-field">
-          <label for="confirmPassword">Şifreyi Onaylayın</label>
-          <input id="confirmPassword" type="password" pInputText [(ngModel)]="confirmPassword" />
+          <label for="email">E-posta *</label>
+          <input id="email" type="email" pInputText formControlName="email" />
         </div>
-        <button pButton type="button" label="Kayıt Ol" class="p-button-raised p-button-primary" (click)="onRegister()"></button>
+        <div class="p-field">
+          <label for="password">Abonelik türü *</label>
+            <p-dropdown 
+            formControlName="subscription_type" 
+            [options]="subscriptionTypes"
+            optionLabel="name"
+            placeholder="Abonelik türünü seçiniz" />
+        </div>
+
+        <button pButton type="submit" label="Kayıt Ol" class="p-button-raised p-button-primary"></button>
       </div>
+    </form>
       <div class="links">
         <button pButton type="button" label="Zaten üyeyseniz giriş yapınız." class="p-button-link" (click)="onGotoLogin()"></button>
         <button pButton type="button" label="Ana Sayfaya Dön" class="p-button-link" (click)="onBackToMain()"></button>
