@@ -12,6 +12,9 @@ import { DriverListComponent } from './driver-list/driver-list.component';
 import { CarTypeListComponent } from './car-type-list/car-type-list.component';
 import { CarListComponent } from './car-list/car-list.component';
 import { CurrencyListComponent } from './currency-list/currency-list.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
     {path: 'operation', component: OperasyonComponent}, 
@@ -24,6 +27,9 @@ const routes: Routes = [
     {path: 'cartypes', component: CarTypeListComponent}, 
     {path: 'cars', component: CarListComponent}, 
     {path: 'currencies', component: CurrencyListComponent}, 
+    {path: 'users', component: UserListComponent}, 
+    {path: 'users/profile', component: UserDetailComponent}, 
+    {path: 'users/changepassword', component: ChangePasswordComponent}, 
 ];
 
 @NgModule({

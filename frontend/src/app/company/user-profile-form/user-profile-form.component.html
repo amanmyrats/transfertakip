@@ -1,0 +1,34 @@
+<p-panel header="Edit User Information">
+    <form [formGroup]="userForm" class="user-form" (ngSubmit)="submitForm()">
+      <div class="p-grid p-fluid">
+        <div class="p-col-12">
+          <span class="p-float-label">
+            <input id="firstName" type="text" formControlName="firstName" pInputText>
+            <label for="firstName">First Name</label>
+          </span>
+        </div>
+        <div class="p-col-12">
+          <span class="p-float-label">
+            <input id="lastName" type="text" formControlName="lastName" pInputText>
+            <label for="lastName">Last Name</label>
+          </span>
+        </div>
+        <div class="p-col-12">
+          <span class="p-float-label">
+            <input id="email" type="email" formControlName="email" pInputText>
+            <label for="email">Email</label>
+          </span>
+        </div>
+        <div class="p-col-12">
+          <span class="p-float-label">
+            <input id="phone" type="text" formControlName="phone" pInputText>
+            <label for="phone">Phone Number</label>
+          </span>
+        </div>
+        <div class="p-col-12">
+          <button type="submit" pButton label="Save Changes" class="p-button-success"></button>
+        </div>
+      </div>
+    </form>
+  </p-panel>
+  

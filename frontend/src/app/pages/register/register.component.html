@@ -8,9 +8,9 @@
           <input id="company_name" type="text" pInputText formControlName="name" />
         </div>
 
-        <div class="p-field">
+        <div class="p-field" [formGroup]="ownerForm">
           <label for="owner_full_name">Yetkili Kişi *</label>
-          <input id="owner_full_name" type="text" pInputText formControlName="owner.first_name" />
+          <input id="owner_full_name" type="text" pInputText formControlName="first_name" />
         </div>
         <div class="p-field">
           <label for="phone">Telefon *</label>
@@ -20,12 +20,13 @@
           <label for="email">E-posta *</label>
           <input id="email" type="email" pInputText formControlName="contact_email" />
         </div>
-        <div class="p-field">
+        <div class="p-field" [formGroup]="subscriptionForm">
           <label for="password">Abonelik türü *</label>
             <p-dropdown 
-            formControlName="subscription.subscription_type" 
+            formControlName="subscription_type" 
             [options]="subscriptionTypes"
-            optionLabel="name"
+            optionLabel="name" 
+            optionValue="id"
             placeholder="Abonelik türünü seçiniz" />
         </div>
 

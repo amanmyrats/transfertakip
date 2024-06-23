@@ -6,9 +6,9 @@ from partner.models import Agency, Taseron
 
 class Company(models.Model):
     name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, blank=True, null=True)
     contact_email = models.EmailField()
-    contact_phone = models.Phone()
+    contact_phone = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

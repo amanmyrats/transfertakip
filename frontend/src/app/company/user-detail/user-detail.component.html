@@ -1,0 +1,28 @@
+<p-panel header="User Profile">
+    <div class="p-grid">
+      <div class="p-col-12 p-md-4">
+        <div class="profile-picture">
+          <img src="assets/profile-pic.jpg" alt="Profile Picture">
+        </div>
+      </div>
+      <div class="p-col-12 p-md-8">
+        <div class="profile-details">
+          <p>
+            <strong>First Name:</strong> {{ user.firstName }}
+          </p>
+          <p>
+            <strong>Last Name:</strong> {{ user.lastName }}
+          </p>
+          <p>
+            <strong>Email:</strong> {{ user.email }}
+          </p>
+          <p>
+            <strong>Phone Number:</strong> {{ user.phone }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <app-user-profile-form></app-user-profile-form>
+  </p-panel>
+  

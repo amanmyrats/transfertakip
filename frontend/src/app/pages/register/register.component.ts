@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -23,10 +23,10 @@ import { Company } from '../../company/models/company.model';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
   companyForm: FormGroup;
-  owner_form: FormGroup;
-  subscription_form: FormGroup;
+  ownerForm: FormGroup;
+  subscriptionForm: FormGroup;
   subscriptionTypes: SubscriptionType[] = [];
 
   constructor(
@@ -36,23 +36,30 @@ export class RegisterComponent {
     private companyService: CompanyService,
   ) { 
 
-    this.owner_form = this.fb.group({
-      first_name: ['', Validators.required]
+    this.ownerForm = this.fb.group({
+      first_name: ['', Validators.required],
+      email: ['', Validators.required]
     });
-    this.subscription_form = this.fb.group({
-      subscription_type: ['', Validators.required]
+    this.subscriptionForm = this.fb.group({
+      subscription_type: ['']
     });
 
     this.companyForm = this.fb.group({
       name: ['', Validators.required],
-      owner: this.owner_form,
+      owner: this.ownerForm,
       contact_phone: ['', Validators.required],
       contact_email: ['', Validators.required],
-      subscription: this.subscription_form,
+      subscription: this.subscriptionForm,
     });
   }
 
+  ngOnInit(): void {
+    this.getSubscriptionTypes();
+  }
+
   onRegister() {
+    this.ownerForm.controls['email'].setValue(this.companyForm.controls['contact_email'].value)
+    console.log(this.companyForm.value)
     if (this.companyForm.valid) {
       // Handle registration logic here
       console.log('RegistrationForm:', this.companyForm.value);
@@ -87,10 +94,11 @@ export class RegisterComponent {
   getSubscriptionTypes() {
     this.subscriptionTypeService.getSubscriptionTypes().subscribe(
       (subscriptionTypes: SubscriptionType[]) => {
+        console.log('Successfully fetched subscriptionTypes');
         this.subscriptionTypes = subscriptionTypes;
       },
       (error) => {
-        console.error('Error fetching subscription types:', error);
+        console.log('Error fetching subscription types:', error);
       }
     );
   }

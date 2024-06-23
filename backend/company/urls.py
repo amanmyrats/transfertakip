@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from .views import (
     ReservationModelViewSet, CompanyCreateAPIView, 
-    CompanyModelViewSet
+    CompanyModelViewSet, SubscriptionTypeModelViewSet
 )
 
 
@@ -11,7 +11,8 @@ app_name = 'company'
 
 router = routers.DefaultRouter()
 router.register(r'reservations', ReservationModelViewSet)
-router.register(r'companies', ReservationModelViewSet)
+router.register(r'companies', CompanyModelViewSet)
+router.register(r'subscriptiontypes', SubscriptionTypeModelViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

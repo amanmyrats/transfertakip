@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
@@ -8,22 +8,38 @@ import { CommonModule } from '@angular/common';
 import { RippleModule } from 'primeng/ripple';
 import { ActiveRouteService } from '../../services/active-route.service';
 import { Router } from '@angular/router';
-
+import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
+import { ButtonModule } from 'primeng/button';
+import { MenuModule } from 'primeng/menu';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrl: './navbar.component.scss', 
     standalone: true,
-    imports: [MenubarModule, BadgeModule, AvatarModule, InputTextModule, RippleModule, CommonModule]
+    imports: [
+        MenubarModule, 
+        BadgeModule, 
+        AvatarModule, 
+        InputTextModule, 
+        RippleModule, 
+        CommonModule, 
+        OverlayPanelModule, 
+        ButtonModule, 
+        MenuModule
+    ]
 })
 export class NavbarComponent implements OnInit {
     items: MenuItem[] | undefined;
+    userMenuItems: MenuItem[] | undefined;
     activeRoute: string = '';
+    @ViewChild('op') op: OverlayPanel | null = null;
+
 
     constructor(
         private activeRouteService: ActiveRouteService, 
-        private router: Router) {}
+        private router: Router, 
+        ) {}
 
     ngOnInit() {
         this.items = [
@@ -90,8 +106,33 @@ export class NavbarComponent implements OnInit {
             },
         ];
     
-    this.activeRouteService.activeRoute$.subscribe(route => {
-        this.activeRoute = route;
-    });
-}
+        this.userMenuItems = [
+            {
+                label: 'Profil',
+                icon: 'pi pi-user', 
+                command: () => this.onMenuItemClick('/company/users/profile')
+         
+            },
+            {
+                label: 'Şifre değiştir',
+                icon: 'pi pi-key', 
+                command: () => this.onMenuItemClick('/company/users/changepassword')
+            },
+            {
+                label: 'Çıkış',
+                icon: 'pi pi-sign-out', 
+                command: () => this.onMenuItemClick('/logout')
+            },
+        ];
+
+        this.activeRouteService.activeRoute$.subscribe(route => {
+            this.activeRoute = route;
+        });
+    }
+
+    onMenuItemClick(linkAddress: string) {
+        (this.op ?? { hide: () => {} }).hide();
+        this.router.navigateByUrl(linkAddress);
+      }
+
 }

@@ -4,6 +4,7 @@ import { CreateReservationComponent } from './create-reservation/create-reservat
 import { CompanyHomeComponent } from './company/company-home/company-home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { LogoutComponent } from './pages/logout/logout.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -14,4 +15,5 @@ export const routes: Routes = [
         loadChildren: () => import('./company/company-routing.module').then(m => m.CompanyRoutingModule)
     }, 
     {path: 'login', component: LoginComponent},
+    {path: 'logout', component: LogoutComponent},
     {path: 'register', component: RegisterComponent},];

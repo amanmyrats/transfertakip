@@ -26,7 +26,7 @@ export class CompanyService {
   }
 
   createTrialCompany(company: any): Observable<Company> {
-    return this.http.post<Company>(`${env.baseUrl}${env.apiV1}'company/trial/create/'}`, company);
+    return this.http.post<Company>(`${env.baseUrl}${env.apiV1}company/trial/create/`, company);
   }
 
   updateCompany(id: string, company: Company): Observable<Company> {
