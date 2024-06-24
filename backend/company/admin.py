@@ -2,7 +2,8 @@ from django.contrib import admin
 
 from .models import (
     Reservation, Currency, Car, CarType, Driver, Expense, 
-    SubscriptionType, Subscription, Company
+    SubscriptionType, Subscription, Company, DefaultExpenseType,
+    ExpenseType
 )
 
 
@@ -15,3 +16,5 @@ admin.site.register(Driver)
 admin.site.register(Expense)
 admin.site.register(SubscriptionType)
 admin.site.register(Subscription)
+admin.site.register(DefaultExpenseType)
+admin.site.register(ExpenseType)

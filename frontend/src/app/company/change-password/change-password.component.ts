@@ -5,6 +5,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { MessagesModule } from 'primeng/messages';
+import { Router } from '@angular/router';
+import { Message, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-change-password',
@@ -17,21 +22,27 @@ import { CommonModule } from '@angular/common';
     PasswordModule, 
     ButtonModule, 
     CommonModule, 
+    MessagesModule
   ],
+  providers: [MessageService],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss'
 })
 export class ChangePasswordComponent  implements OnInit {
   passwordForm: FormGroup;
-
+  error_messages: Message[] = [];
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder, 
+    private userService: UserService,
+    private authService: AuthService, 
+    private router: Router, 
+    private messageService: MessageService, 
     ) {
     this.passwordForm = this.fb.group({
-      currentPassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
-    });
+      old_password: ['', Validators.required],
+      new_password: ['', [Validators.required, Validators.minLength(6)]],
+      confirm_password: ['', Validators.required]
+    }, { validator: this.passwordConfirmationValidator });
   }
 
   ngOnInit(): void {
@@ -41,18 +52,31 @@ export class ChangePasswordComponent  implements OnInit {
     if (this.passwordForm.valid) {
       // Logic to handle form submission (e.g., send data to backend)
       console.log('Form submitted with values:', this.passwordForm.value);
+      this.userService.changePassword(this.passwordForm.value).subscribe({
+        next: response => {
+          console.log('Password changed successfully');
+          this.authService.logout();
+          this.router.navigate(['/login']);
+
+        }, 
+        error: error => {
+          console.error('Error changing password:', error);
+          console.error(error)
+          // show this error message to the user in the UI
+          this.messageService.add({severity:'error', summary:'Error', detail: error.error.status});
+        }
+      });
       // Reset form after submission (optional)
       this.passwordForm.reset();
     }
   }
 
-  // passwordMatchValidator(control: AbstractControl): any {
-  //   const newPassword = control.get('newPassword')?.value;
-  //   const confirmPassword = control.get('confirmPassword')?.value;
-  //   if (newPassword !== confirmPassword) {
-  //     control.get('confirmPassword')?.setErrors({ passwordMismatch: true });
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  passwordConfirmationValidator(control: AbstractControl) {
+    const new_password = control.get('new_password');
+    const confirm_password = control.get('confirm_password');
+    if (new_password?.value !== confirm_password?.value) {
+      confirm_password?.setErrors({ passwordMismatch: true });
+    }
+  }
+
 }

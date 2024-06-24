@@ -63,9 +63,7 @@ class Reservation(models.Model):
         return f"{self.transfer_date} - [{self.pickup_short}-{self.dest_short}] - {self.transfer_time} , Nakit={self.is_nakit}"
 
 
-
 class DefaultCurrency(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     code = models.CharField(max_length=3, unique=True)
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -74,6 +72,24 @@ class DefaultCurrency(models.Model):
 
     def __str__(self):
         return self.code
+    
+
+class DefaultCarType(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+    
+
+class DefaultExpenseType(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"ExpenseType: {self.name}"
     
 
 class Currency(models.Model):
@@ -87,17 +103,6 @@ class Currency(models.Model):
     def __str__(self):
         return self.code
 
-
-class DefaultCarType(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-
-    def __str__(self):
-        return self.name
-    
 
 class CarType(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
@@ -131,14 +136,25 @@ class Driver(models.Model):
         return self.name
 
 
-class Expense(models.Model):
+class ExpenseType(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"ExpenseType: {self.name}"
+    
+
+class Expense(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    expense_type = models.ForeignKey(ExpenseType, on_delete=models.CASCADE)
+    description = models.TextField(blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     currency = models.ForeignKey('Currency', on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f"{self.name} - {self.amount} {self.currency}"
+        return f"{self.expense_type} - {self.amount} {self.currency}"
 
 
 

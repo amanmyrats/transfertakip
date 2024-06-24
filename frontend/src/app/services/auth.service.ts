@@ -13,6 +13,7 @@ export class AuthService {
 
   private baseUrl = env.baseUrl;
   private refreshInProgress = false;
+  private endPoint = 'auth/'
 
   constructor(
     private http: HttpClient, 
@@ -22,7 +23,7 @@ export class AuthService {
   // private accessTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   login(username: string, password: string): Observable<boolean> {
-    return this.http.post<any>(`${this.baseUrl}auth/api/token/`, { username, password })
+    return this.http.post<any>(`${this.baseUrl}${this.endPoint}api/token/`, { username, password })
       .pipe(
         map(response => {
           if (response && response.access) {
@@ -39,7 +40,7 @@ export class AuthService {
   refreshToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refreshToken');
     if (refreshToken) {
-      return this.http.post<any>(`${this.baseUrl}auth/api/token/refresh/`, { refresh: refreshToken })
+      return this.http.post<any>(`${this.baseUrl}${this.endPoint}api/token/refresh/`, { refresh: refreshToken })
         .pipe(
           map(response => {
             if (response && response.access) {
@@ -77,5 +78,10 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.currentAccessToken;
+  }
+
+  changePassword(oldPassword: string, newPassword: string, confirmPassword: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}${this.endPoint}changepassword/`, 
+      { old_password: oldPassword, new_password: newPassword, confirm_password: confirmPassword});
   }
 }

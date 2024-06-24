@@ -1,34 +1,32 @@
-<p-panel header="Edit User Information">
-    <form [formGroup]="userForm" class="user-form" (ngSubmit)="submitForm()">
+<div class="profile-form-wrapper">
+
+<p-panel>
+    <form [formGroup]="profileForm" class="user-form" (ngSubmit)="submitForm()">
       <div class="p-grid p-fluid">
         <div class="p-col-12">
           <span class="p-float-label">
-            <input id="firstName" type="text" formControlName="firstName" pInputText>
+            <input id="firstName" type="text" formControlName="first_name" pInputText>
             <label for="firstName">First Name</label>
           </span>
         </div>
         <div class="p-col-12">
           <span class="p-float-label">
-            <input id="lastName" type="text" formControlName="lastName" pInputText>
+            <input id="lastName" type="text" formControlName="last_name" pInputText>
             <label for="lastName">Last Name</label>
           </span>
         </div>
-        <div class="p-col-12">
-          <span class="p-float-label">
-            <input id="email" type="email" formControlName="email" pInputText>
-            <label for="email">Email</label>
+        <!-- show form validation errors here -->
+        <div class="p-col-12" style="margin-top: 10px;">
+          <span *ngIf="profileForm.get('first_name')?.errors?.['required'] && profileForm.get('first_name')?.touched" class="p-error">
+            First Name is required.
           </span>
         </div>
-        <div class="p-col-12">
-          <span class="p-float-label">
-            <input id="phone" type="text" formControlName="phone" pInputText>
-            <label for="phone">Phone Number</label>
-          </span>
-        </div>
-        <div class="p-col-12">
+        <div class="p-col-6">
           <button type="submit" pButton label="Save Changes" class="p-button-success"></button>
         </div>
       </div>
     </form>
+    <p-messages [value]="error_messages"></p-messages>
   </p-panel>
+</div>
   

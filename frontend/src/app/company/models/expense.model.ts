@@ -1,8 +1,9 @@
 import { Currency } from "./currency.model";
+import { ExpenseType } from "./expense-type";
 
 export class Expense {
     id?: string;
-    name?: string;
+    expense_type?: ExpenseType;
     amount?: number;
     currency?: string;
     currency_obj?: Currency

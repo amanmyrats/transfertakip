@@ -1,1 +1,20 @@
-<p>agency-list works!</p>
+<p-table [value]="agencies" 
+styleClass="p-datatable-striped p-datatable-gridlines" 
+[rows]="20" [loading]="loading" [rowHover]="true"  >
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Acente</th>
+            <th>Onların borcu</th>
+            <th>Bizim borcumuz</th>
+            <th>Fark</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-agency>
+        <tr>
+            <td>{{agency.name}}</td>
+            <td>{{agency.bana_borcu}}</td>
+            <td>{{agency.benim_borcum}}</td>
+            <td>{{agency.bana_borcu - agency.benim_borcum}}</td>
+        </tr>
+    </ng-template>
+</p-table>

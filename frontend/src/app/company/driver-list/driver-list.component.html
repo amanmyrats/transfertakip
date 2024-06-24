@@ -1,1 +1,14 @@
-<p>driver-list works!</p>
+<p-table [value]="drivers" 
+styleClass="p-datatable-striped p-datatable-gridlines" 
+[rows]="20" [loading]="loading" [rowHover]="true"  >
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Adı</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-driver>
+        <tr>
+            <td>{{driver.name}}</td>
+        </tr>
+    </ng-template>
+</p-table>

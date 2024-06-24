@@ -5,12 +5,22 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import action
 
-from accounts.serializers import OwnerRegistrationSerializer
 from accounts.models import Account
-from .serializers import CompanyCreateSerializer
+from .serializers import (
+    CompanyCreateSerializer, CompanyUserModelSerializer,
+    DefaultCurrencyModelSerializer, CurrencyModelSerializer,
+    DefaultCarTypeModelSerializer, CarTypeModelSerializer,
+    CarModelSerializer, DefaultExpenseTypeModelSerializer,
+    ExpenseTypeModelSerializer, ExpenseModelSerializer,
+    DriverModelSerializer, SubscriptionModelSerializer
+
+)
 from .models import (
-    Reservation, Company, SubscriptionType, Subscription
+    Reservation, Company, SubscriptionType, Subscription, 
+    DefaultCurrency, Currency, DefaultCarType, CarType,
+    Car, DefaultExpenseType, ExpenseType, Expense, Driver
 )
 from .serializers import (
     ReservationModelSerializer, CompanyModelSerializer, 
@@ -20,11 +30,6 @@ from .serializers import (
 class ReservationModelViewSet(viewsets.ModelViewSet):
     queryset = Reservation.objects.all()
     serializer_class = ReservationModelSerializer
-
-
-class SubscriptionTypeModelViewSet(viewsets.ModelViewSet):
-    queryset = SubscriptionType.objects.all()
-    serializer_class = SubscriptionTypeModelSerializer
 
 
 class CompanyModelViewSet(viewsets.ModelViewSet):
@@ -43,14 +48,11 @@ class CompanyCreateAPIView(APIView):
         if serializer.is_valid(raise_exception=True):
             validated_data = serializer.validated_data
 
-
             # Create Owner object (assuming Owner model exists)
             owner_data = validated_data['owner']
-            # owner = Account.objects.create(**owner_data)  # Use appropriate create method
 
             # Create Subscription object (assuming Subscription model exists)
             subscription_data = validated_data['subscription']
-            # subscription = Subscription.objects.create(**subscription_data)  # Use appropriate create method
 
             # Create Company object with owner and subscription references
             company = Company.objects.create(
@@ -88,3 +90,72 @@ class CompanyCreateAPIView(APIView):
             # companys page for admins, so that they can approve new company requests
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class CompanyUserModelViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all()
+    serializer_class = CompanyUserModelSerializer
+
+    # add password change logic here
+    # add password reset logic here
+    # add password forgot logic here
+    @action(detail=True, methods=['post'])
+    def changepassword(self, request, pk=None):
+        print('inside changepassword')
+
+
+class DefaultCurrencyModelViewSet(viewsets.ModelViewSet):
+    queryset = DefaultCurrency.objects.all()
+    serializer_class = DefaultCurrencyModelSerializer
+
+
+class CurrencyModelViewSet(viewsets.ModelViewSet):
+    queryset = Currency.objects.all()
+    serializer_class = CurrencyModelSerializer
+
+
+class DefaultCarTypeModelViewSet(viewsets.ModelViewSet):
+    queryset = DefaultCarType.objects.all()
+    serializer_class = DefaultCarTypeModelSerializer
+
+
+class CarTypeModelViewSet(viewsets.ModelViewSet):
+    queryset = CarType.objects.all()
+    serializer_class = CarTypeModelSerializer
+
+
+class CarModelViewSet(viewsets.ModelViewSet):
+    queryset = Car.objects.all()
+    serializer_class = CarModelSerializer
+
+
+class DefaultExpenseTypeModelViewSet(viewsets.ModelViewSet):
+    queryset = DefaultExpenseType.objects.all()
+    serializer_class = DefaultExpenseTypeModelSerializer
+
+
+class ExpenseTypeModelViewSet(viewsets.ModelViewSet):
+    queryset = ExpenseType.objects.all()
+    serializer_class = ExpenseTypeModelSerializer
+
+
+class ExpenseModelViewSet(viewsets.ModelViewSet):
+    queryset = Expense.objects.all()
+    serializer_class = ExpenseModelSerializer
+
+
+class DriverModelViewSet(viewsets.ModelViewSet):
+    queryset = Driver.objects.all()
+    serializer_class = DriverModelSerializer
+
+
+class SubscriptionModelViewSet(viewsets.ModelViewSet):
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionModelSerializer
+
+
+class SubscriptionTypeModelViewSet(viewsets.ModelViewSet):
+    queryset = SubscriptionType.objects.all()
+    serializer_class = SubscriptionTypeModelSerializer
+
+

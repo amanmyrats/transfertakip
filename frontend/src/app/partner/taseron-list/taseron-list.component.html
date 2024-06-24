@@ -1,1 +1,20 @@
-<p>taseron-list works!</p>
+<p-table [value]="taserons" 
+styleClass="p-datatable-striped p-datatable-gridlines" 
+[rows]="20" [loading]="loading" [rowHover]="true"  >
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Taşeron</th>
+            <th>Onların borcu</th>
+            <th>Bizim borcumuz</th>
+            <th>Fark</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-taseron>
+        <tr>
+            <td>{{taseron.name}}</td>
+            <td>{{taseron.bana_borcu}}</td>
+            <td>{{taseron.benim_borcum}}</td>
+            <td>{{taseron.bana_borcu - taseron.benim_borcum}}</td>
+        </tr>
+    </ng-template>
+</p-table>

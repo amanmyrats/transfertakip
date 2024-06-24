@@ -1,8 +1,11 @@
 from rest_framework import serializers
 
 from accounts.serializers import OwnerRegistrationSerializer
+from accounts.models import Account
 from .models import (
-    Reservation, Company, Subscription, SubscriptionType
+    Reservation, Company, Subscription, SubscriptionType, DefaultCurrency, 
+    Currency, DefaultCarType, CarType, Car, Driver, ExpenseType, Expense, 
+    SubscriptionType, Subscription, DefaultExpenseType
 ) 
 
     
@@ -38,35 +41,83 @@ class CompanyCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = ('name', 'contact_email', 'contact_phone', 'owner', 'subscription', )
+
+
+class CompanyUserModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ('email', 'password', 'first_name', 'last_name', 'phone')
+
+
+class CompanyUserPasswordChangeSerializer(serializers.ModelSerializer):
+    password_new = serializers.CharField(write_only=True)
+    password_confirm = serializers.CharField(write_only=True)
+    class Meta:
+        model = Account
+        fields = ('password', 'password_new', 'password_confirm')
+
+
+class DefaultCurrencyModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DefaultCurrency
+        fields = '__all__'
+
+
+class CurrencyModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Currency
+        fields = '__all__' 
+
+
+class DefaultCarTypeModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DefaultCarType
+        fields = '__all__'
+
+
+class CarTypeModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarType
+        fields = '__all__'
+
     
-    # def create(self, validated_data):
-    #     # owner_serializer = OwnerCreateSerializer()
-    #     # owner_serializer = self.fields['owner'].child
-    #     # subscription_serializer = SubscriptionRegistrationSerializer()
-    #     # subscription_serializer = self.fields['subscription'].child
+class CarModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = '__all__'
 
-    #     # Create Company first
-    #     company = self.Meta.model.objects.create(**validated_data)
 
-    #     # Create Owner with the company instance (assuming company is required)
-    #     # owner_data = validated_data['owner']
-    #     # owner_data['email'] = company.contact_email
-    #     # owner_data['company'] = company  # Set the company for the owner
-    #     # owner = owner_serializer.create(owner_data)
+class DriverModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Driver
+        fields = '__all__'
 
-    #     # Create Subscription with the company instance
-    #     # subscription_data = validated_data['subscription']
-    #     # subscription_data['company'] = company
 
-    #     # Set start_date as today's date
-    #     # from django.utils import timezone
-    #     # today = timezone.now().date()
-    #     # subscription_data['start_date'] = today
+class DefaultExpenseTypeModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DefaultExpenseType
+        fields = '__all__'
 
-    #     # Set end_date as today's date plus 6 days
-    #     # subscription_data['end_date'] = today + timezone.timedelta(days=6)
 
-    #     # subscription = subscription_serializer.create(subscription_data)
+class ExpenseTypeModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExpenseType
+        fields = '__all__'
 
-    #     return company
 
+class ExpenseModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Expense
+        fields = '__all__'
+
+
+class SubcriptionTypeModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubscriptionType
+        fields = '__all__'
+
+
+class SubscriptionModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = '__all__'

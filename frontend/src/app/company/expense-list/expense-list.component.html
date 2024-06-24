@@ -1,1 +1,20 @@
-<h1>expense-list works!</h1>
+<p-table [value]="expenses" 
+styleClass="p-datatable-striped p-datatable-gridlines" 
+[rows]="20" [loading]="loading" [rowHover]="true"  >
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Gider Türü</th>
+            <th>Açıklama</th>
+            <th>Tutar</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-expense>
+        <tr>
+            <td>{{expense.expense_type}}</td>
+            <td>{{expense.description}}</td>
+            <td>{{expense.amount}} {{expense.currency?.code}}</td>
+            <td></td>
+        </tr>
+    </ng-template>
+</p-table>
