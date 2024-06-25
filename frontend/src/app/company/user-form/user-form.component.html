@@ -1,0 +1,40 @@
+<p-panel>
+    <form [formGroup]="userForm" class="user-form" (ngSubmit)="submitForm()">
+      <div class="p-grid p-fluid">
+        <div class="p-col-12">
+            <span class="p-float-label">
+              <input id="email" type="email" formControlName="email" pInputText>
+              <label for="email">E-mail</label>
+            </span>
+        </div>
+
+        <div class="p-col-12">
+          <span class="p-float-label">
+            <input id="first_name" type="text" formControlName="first_name" pInputText>
+            <label for="first_name">Adı</label>
+          </span>
+        </div>
+        <div class="p-col-12">
+            <span class="p-float-label">
+              <input id="last_name" type="text" formControlName="last_name" pInputText>
+              <label for="last_name">Soyadı</label>
+            </span>
+          </div>
+
+        <div class="p-col-12" style="margin-top: 2rem;">
+              <p-dropdown 
+              id="role"
+              formControlName="role" 
+              [options]="roles"
+              optionLabel="role_name" 
+              optionValue="id"
+              placeholder="İzin seviyesini seçiniz" />
+            </div>
+
+          <div class="p-col-6">
+            <button type="submit" pButton label="Save Changes" class="p-button-success"></button>
+          </div>
+      </div>
+    </form>
+    <p-messages [value]="error_messages"></p-messages>
+  </p-panel>

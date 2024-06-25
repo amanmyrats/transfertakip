@@ -8,34 +8,45 @@ from .models import (
     SubscriptionType, Subscription, DefaultExpenseType
 ) 
 
+
+class CreateModelSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            validated_data['company'] = request.user.company
+        return super().create(validated_data)
     
+    class Meta:
+        model = None
+        fields = '__all__'
+        read_only_fields = ('company',)
 
 
-class ReservationModelSerializer(serializers.ModelSerializer):
+class ReservationModelSerializer(CreateModelSerializer):
     class Meta:
         model = Reservation
         fields = '__all__'
 
 
-class CompanyModelSerializer(serializers.ModelSerializer):
+class CompanyModelSerializer(CreateModelSerializer):
     class Meta:
         model = Company
         fields = '__all__'
 
 
-class SubscriptionRegistrationSerializer(serializers.ModelSerializer):
+class SubscriptionRegistrationSerializer(CreateModelSerializer):
     class Meta:
         model = Subscription
         fields = ('subscription_type',)
 
 
-class SubscriptionTypeModelSerializer(serializers.ModelSerializer):
+class SubscriptionTypeModelSerializer(CreateModelSerializer):
     class Meta:
         model = SubscriptionType
         fields = '__all__'
 
 
-class CompanyCreateSerializer(serializers.ModelSerializer):
+class CompanyCreateSerializer(CreateModelSerializer):
     owner = OwnerRegistrationSerializer()
     subscription = SubscriptionRegistrationSerializer()
     class Meta:
@@ -43,13 +54,13 @@ class CompanyCreateSerializer(serializers.ModelSerializer):
         fields = ('name', 'contact_email', 'contact_phone', 'owner', 'subscription', )
 
 
-class CompanyUserModelSerializer(serializers.ModelSerializer):
+class CompanyUserModelSerializer(CreateModelSerializer):
     class Meta:
         model = Account
-        fields = ('email', 'password', 'first_name', 'last_name', 'phone')
+        fields = ('email', 'password', 'first_name', 'last_name')
 
 
-class CompanyUserPasswordChangeSerializer(serializers.ModelSerializer):
+class CompanyUserPasswordChangeSerializer(CreateModelSerializer):
     password_new = serializers.CharField(write_only=True)
     password_confirm = serializers.CharField(write_only=True)
     class Meta:
@@ -57,67 +68,67 @@ class CompanyUserPasswordChangeSerializer(serializers.ModelSerializer):
         fields = ('password', 'password_new', 'password_confirm')
 
 
-class DefaultCurrencyModelSerializer(serializers.ModelSerializer):
+class DefaultCurrencyModelSerializer(CreateModelSerializer):
     class Meta:
         model = DefaultCurrency
         fields = '__all__'
 
 
-class CurrencyModelSerializer(serializers.ModelSerializer):
+class CurrencyModelSerializer(CreateModelSerializer):
     class Meta:
-        model = Currency
-        fields = '__all__' 
+        model = Currency 
+        fields = '__all__'
 
 
-class DefaultCarTypeModelSerializer(serializers.ModelSerializer):
+class DefaultCarTypeModelSerializer(CreateModelSerializer):
     class Meta:
         model = DefaultCarType
         fields = '__all__'
 
 
-class CarTypeModelSerializer(serializers.ModelSerializer):
+class CarTypeModelSerializer(CreateModelSerializer):
     class Meta:
         model = CarType
         fields = '__all__'
 
     
-class CarModelSerializer(serializers.ModelSerializer):
+class CarModelSerializer(CreateModelSerializer):
     class Meta:
         model = Car
         fields = '__all__'
 
 
-class DriverModelSerializer(serializers.ModelSerializer):
+class DriverModelSerializer(CreateModelSerializer):
     class Meta:
         model = Driver
-        fields = '__all__'
+        fields = ('id', 'name', 'company')
 
 
-class DefaultExpenseTypeModelSerializer(serializers.ModelSerializer):
+class DefaultExpenseTypeModelSerializer(CreateModelSerializer):
     class Meta:
         model = DefaultExpenseType
         fields = '__all__'
 
 
-class ExpenseTypeModelSerializer(serializers.ModelSerializer):
+class ExpenseTypeModelSerializer(CreateModelSerializer):
     class Meta:
         model = ExpenseType
         fields = '__all__'
 
 
-class ExpenseModelSerializer(serializers.ModelSerializer):
+class ExpenseModelSerializer(CreateModelSerializer):
     class Meta:
         model = Expense
         fields = '__all__'
 
 
-class SubcriptionTypeModelSerializer(serializers.ModelSerializer):
+class SubcriptionTypeModelSerializer(CreateModelSerializer):
     class Meta:
         model = SubscriptionType
         fields = '__all__'
 
 
-class SubscriptionModelSerializer(serializers.ModelSerializer):
+class SubscriptionModelSerializer(CreateModelSerializer):
     class Meta:
-        model = Subscription
         fields = '__all__'
+        model = Subscription

@@ -1,0 +1,16 @@
+<p-panel>
+    <form [formGroup]="driverForm" class="user-form" (ngSubmit)="submitForm()">
+      <div class="p-grid p-fluid">
+        <div class="p-col-12">
+          <span class="p-float-label">
+            <input id="name" type="text" formControlName="name" pInputText>
+            <label for="name">Name</label>
+          </span>
+        </div>
+        <div class="p-col-6">
+          <button type="submit" pButton label="Save Changes" class="p-button-success"></button>
+        </div>
+      </div>
+    </form>
+    <p-messages [value]="error_messages"></p-messages>
+  </p-panel>

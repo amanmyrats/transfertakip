@@ -1,3 +1,5 @@
+import { Role } from "./role.model";
+
 export class User {
     id?: string;
     company?: string;
@@ -8,4 +10,5 @@ export class User {
     is_active?: string;
     is_staff?: string;
     date_joined?: string;
+    role?: Role
 }

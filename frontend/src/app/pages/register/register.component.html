@@ -21,8 +21,9 @@
           <input id="email" type="email" pInputText formControlName="contact_email" />
         </div>
         <div class="p-field" [formGroup]="subscriptionForm">
-          <label for="password">Abonelik türü *</label>
+          <label for="subscription-type">Abonelik türü *</label>
             <p-dropdown 
+            id="subscription-type"
             formControlName="subscription_type" 
             [options]="subscriptionTypes"
             optionLabel="name" 

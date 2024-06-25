@@ -67,6 +67,7 @@ export class RegisterComponent implements OnInit{
         next: (company: Company) => {
           console.log('Company trial has been created successfully');
           console.log(company);
+          this.onGotoLogin();
         }, 
         error: (err: any) => {
           console.log("Error happened when creating trial company");
@@ -78,6 +79,7 @@ export class RegisterComponent implements OnInit{
       console.error('Passwords do not match');
     }
   }
+
   
   onGotoLogin() {
     // Redirect to main page
@@ -95,6 +97,7 @@ export class RegisterComponent implements OnInit{
     this.subscriptionTypeService.getSubscriptionTypes().subscribe(
       (subscriptionTypes: SubscriptionType[]) => {
         console.log('Successfully fetched subscriptionTypes');
+        console.log(subscriptionTypes);
         this.subscriptionTypes = subscriptionTypes;
       },
       (error) => {

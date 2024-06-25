@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit{
     private fb: FormBuilder,
   ) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
@@ -43,8 +43,9 @@ export class LoginComponent implements OnInit{
   onSubmit() {
     if (this.loginForm.valid) {
       this.authService.login(
-        this.loginForm.controls['username'].value, 
-        this.loginForm.controls['password'].value).subscribe((success) => {
+        this.loginForm.controls['email'].value, 
+        this.loginForm.controls['password'].value
+      ).subscribe((success) => {
         if (success) {
           // Redirect to company page
           console.log('Redirect to company page');

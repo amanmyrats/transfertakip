@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 
-from accounts.models import Account
+from accounts.models import Account, Role, AccountRole
 from .serializers import (
     CompanyCreateSerializer, CompanyUserModelSerializer,
     DefaultCurrencyModelSerializer, CurrencyModelSerializer,
@@ -62,14 +62,15 @@ class CompanyCreateAPIView(APIView):
             )
             # Generate a random password (replace with your preferred logic)
             from django.utils.crypto import get_random_string
-            password = get_random_string(length=10)
+            # password = get_random_string(length=10)
+            password = validated_data['contact_email']
 
             owner = Account.objects.create_user(
-                username=owner_data['email'],
                 email=owner_data['email'],
                 first_name=owner_data['first_name'],
                 password=password, 
-                company=company
+                company=company, 
+                is_owner=True
             )
             # Set start_date as today's date
             from django.utils import timezone
@@ -84,6 +85,13 @@ class CompanyCreateAPIView(APIView):
                 start_date=subscription_data['start_date'], 
                 end_date=subscription_data['end_date']
             )
+
+            role_exists = Role.objects.filter(role_name='yonetici').exists()
+            if not role_exists:
+                role = Role.objects.create(role_name='yonetici')
+            else:
+                role = Role.objects.get(role_name='yonetici')
+            AccountRole.objects.create(account=owner, role=role)
 
             # Send telegram message to admins
             # Send mail to admins
@@ -157,5 +165,8 @@ class SubscriptionModelViewSet(viewsets.ModelViewSet):
 class SubscriptionTypeModelViewSet(viewsets.ModelViewSet):
     queryset = SubscriptionType.objects.all()
     serializer_class = SubscriptionTypeModelSerializer
+    permission_class = [AllowAny]
+    authentication_classes = []
+
 
 

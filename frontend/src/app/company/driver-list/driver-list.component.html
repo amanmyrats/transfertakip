@@ -1,3 +1,22 @@
+<div class="card">
+    <p-toolbar>
+        <div class="p-toolbar-group-start">
+            <p-button icon="pi pi-plus" class="mr-2" (click)="showForm()" />
+            <p-button icon="pi pi-print" class="mr-2" />
+            <p-button icon="pi pi-upload" />
+        </div>
+        <div class="p-toolbar-group-center">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText placeholder="Search" />
+            </span>
+        </div>
+        <div class="p-toolbar-group-end">
+            <p-splitButton label="Save" icon="pi pi-check" [model]="items" />
+        </div>
+    </p-toolbar>
+</div>
+
 <p-table [value]="drivers" 
 styleClass="p-datatable-striped p-datatable-gridlines" 
 [rows]="20" [loading]="loading" [rowHover]="true"  >
@@ -11,4 +30,5 @@ styleClass="p-datatable-striped p-datatable-gridlines"
             <td>{{driver.name}}</td>
         </tr>
     </ng-template>
+    <p-toast />
 </p-table>

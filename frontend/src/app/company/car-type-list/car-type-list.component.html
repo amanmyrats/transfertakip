@@ -1,1 +1,14 @@
-<p>car-type-list works!</p>
+<p-table [value]="car_types" 
+styleClass="p-datatable-striped p-datatable-gridlines" 
+[rows]="20" [loading]="loading" [rowHover]="true"  >
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Adı</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-car_type>
+        <tr>
+            <td>{{car_type.name}}</td>
+        </tr>
+    </ng-template>
+</p-table>

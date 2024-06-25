@@ -33,8 +33,8 @@ export class NavbarComponent implements OnInit {
     items: MenuItem[] | undefined;
     userMenuItems: MenuItem[] | undefined;
     activeRoute: string = '';
+    logoPath: string = '';
     @ViewChild('op') op: OverlayPanel | null = null;
-
 
     constructor(
         private activeRouteService: ActiveRouteService, 
@@ -42,6 +42,7 @@ export class NavbarComponent implements OnInit {
         ) {}
 
     ngOnInit() {
+        this.logoPath = 'assets/images/logo_resized.png';
         this.items = [
             {
                 label: 'Anasayfa',
@@ -66,28 +67,28 @@ export class NavbarComponent implements OnInit {
                 routerLink: '/company/expenses'
             },
             {
+                label: 'Acenteler',
+                icon: 'pi pi-bolt', 
+                routerLink: '/company/agencies'
+            },
+            {
+                label: 'Taşeronlar',
+                icon: 'pi pi-server',
+                routerLink: '/company/taserons'
+            },
+            {
                 label: 'Admin',
                 icon: 'pi pi-user-edit',
                 items: [
-                    {
-                        label: 'Acenteler',
-                        icon: 'pi pi-bolt', 
-                        routerLink: '/company/agencies'
-                    },
-                    {
-                        label: 'Taşeronlar',
-                        icon: 'pi pi-server',
-                        routerLink: '/company/taserons'
-                    },
                     {
                         label: 'Sürücüler',
                         icon: 'pi pi-pencil',
                         routerLink: '/company/drivers'
                     },
                     {
-                        label: 'Araba Tipleri',
+                        label: 'Kullanıcılar',
                         icon: 'pi pi-pencil',
-                        routerLink: '/company/cartypes'
+                        routerLink: '/company/users'
                     },
                     {
                         label: 'Arabalar',
@@ -98,6 +99,16 @@ export class NavbarComponent implements OnInit {
                         label: 'Para Birimleri',
                         icon: 'pi pi-pencil',
                         routerLink: '/company/currencies'
+                    },
+                    {
+                        label: 'Araba Tipleri',
+                        icon: 'pi pi-pencil',
+                        routerLink: '/company/cartypes'
+                    },
+                    {
+                        label: 'Harcama Tipleri',
+                        icon: 'pi pi-pencil',
+                        routerLink: '/company/expensetypes'
                     },
                     {
                         separator: true

@@ -1,3 +1,10 @@
 Backend
 
-- Add default data model for currency, cartype etc.
+- filter based on user company, if superuser then all
+- permissions in Backend
+
+Frontend
+
+- filters, searches, action buttons, 
+- pagination
+- forms

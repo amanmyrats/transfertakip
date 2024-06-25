@@ -5,9 +5,10 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 
-from accounts.models import Account
+from accounts.models import Account, Role, AccountRole
 from .serializers import (
-    AccountModelSerializer, ChangePasswordSerializer, ProfileSerializer
+    AccountModelSerializer, ChangePasswordSerializer, ProfileSerializer, 
+    RoleModelSerializer, AccountRoleModelSerializer
 )
 
 
@@ -55,3 +56,13 @@ class ProfileAPIView(views.APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class RoleModelViewSet(viewsets.ModelViewSet):
+    queryset = Role.objects.all()
+    serializer_class = RoleModelSerializer
+
+
+class AccountRoleModelViewSet(viewsets.ModelViewSet):
+    queryset = AccountRole.objects.all()
+    serializer_class = AccountRoleModelSerializer

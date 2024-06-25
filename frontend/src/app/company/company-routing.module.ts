@@ -15,8 +15,11 @@ import { CurrencyListComponent } from './currency-list/currency-list.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ExpenseTypeListComponent } from './expense-type-list/expense-type-list.component';
+import { ReportComponent } from './report/report.component';
 
 const routes: Routes = [
+    {path: '', component: ReportComponent}, 
     {path: 'operation', component: OperasyonComponent}, 
     {path: 'reservations', component: ReservationListComponent}, 
     {path: 'reservationcreate', component: ReservationFormComponent}, 
@@ -24,9 +27,10 @@ const routes: Routes = [
     {path: 'agencies', component: AgencyListComponent}, 
     {path: 'taserons', component: TaseronListComponent},
     {path: 'drivers', component: DriverListComponent}, 
-    {path: 'cartypes', component: CarTypeListComponent}, 
     {path: 'cars', component: CarListComponent}, 
     {path: 'currencies', component: CurrencyListComponent}, 
+    {path: 'cartypes', component: CarTypeListComponent}, 
+    {path: 'expensetypes', component: ExpenseTypeListComponent}, 
     {path: 'users', component: UserListComponent}, 
     {path: 'users/profile', component: UserDetailComponent}, 
     {path: 'users/changepassword', component: ChangePasswordComponent}, 

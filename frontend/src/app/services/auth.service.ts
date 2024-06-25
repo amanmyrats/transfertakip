@@ -22,8 +22,8 @@ export class AuthService {
 
   // private accessTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  login(username: string, password: string): Observable<boolean> {
-    return this.http.post<any>(`${this.baseUrl}${this.endPoint}api/token/`, { username, password })
+  login(email: string, password: string): Observable<boolean> {
+    return this.http.post<any>(`${this.baseUrl}${this.endPoint}api/token/`, { email, password })
       .pipe(
         map(response => {
           if (response && response.access) {

@@ -38,5 +38,4 @@ export class UserService {
   changePassword(userChangePassword: UserChangePassword): Observable<any> {
     return this.http.post(`${env.baseUrl}${env.apiV1}${this.endpoint}changepassword/`, userChangePassword);
   }
-
 }
