@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.db import models
+from django.core.exceptions import ValidationError
 
 from partner.models import Agency, Taseron
 
@@ -134,7 +135,16 @@ class Driver(models.Model):
 
     def __str__(self):
         return self.name
-
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['company', 'name'], name='unique_driver')
+        ]
+    # def clean(self):
+    #     # Check if a driver with the same name and company already exists
+    #     if Driver.objects.filter(company=self.company, name=self.name).exists():
+    #         raise ValidationError({'name': 'This name is already taken for this company.'})
+    #     super().clean()
 
 class ExpenseType(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)

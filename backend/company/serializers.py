@@ -1,4 +1,7 @@
+from django.db.utils import IntegrityError
+
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from accounts.serializers import OwnerRegistrationSerializer
 from accounts.models import Account
@@ -21,7 +24,7 @@ class CreateModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('company',)
 
-
+        
 class ReservationModelSerializer(CreateModelSerializer):
     class Meta:
         model = Reservation
@@ -101,7 +104,7 @@ class CarModelSerializer(CreateModelSerializer):
 class DriverModelSerializer(CreateModelSerializer):
     class Meta:
         model = Driver
-        fields = ('id', 'name', 'company')
+        fields = ('id', 'name',)
 
 
 class DefaultExpenseTypeModelSerializer(CreateModelSerializer):

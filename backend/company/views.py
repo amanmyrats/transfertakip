@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from rest_framework.exceptions import ValidationError
+from rest_framework.views import exception_handler
 from rest_framework.permissions import AllowAny
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -156,6 +158,23 @@ class DriverModelViewSet(viewsets.ModelViewSet):
     queryset = Driver.objects.all()
     serializer_class = DriverModelSerializer
 
+    # def handle_exception(self, exc, context):
+    #     # Pass through existing exception handlers
+    #     response = exception_handler(exc, context)
+
+    #     # If no existing handler was found, handle it here
+    #     if response is None:
+            
+    #         self.raise_uncaught_exception(exc, context)
+    #         # # Check for specific exceptions (optional)
+    #         # if isinstance(exc, ValidationError):
+    #         #     # Return JSON with validation errors
+    #         #     return response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
+    #         # else:
+    #         #     # Return generic error for other exceptions
+    #         #     return response({'error': str(exc)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    #     return response
 
 class SubscriptionModelViewSet(viewsets.ModelViewSet):
     queryset = Subscription.objects.all()

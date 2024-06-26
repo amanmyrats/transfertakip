@@ -3,10 +3,13 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MessagesModule } from 'primeng/messages';
 import { PanelModule } from 'primeng/panel';
 import { DriverService } from '../services/driver.service';
-import { Message, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Driver } from '../models/driver.model';
+import { HttpErrorPrinterService } from '../../services/http-error-printer.service';
 
 @Component({
   selector: 'app-driver-form',
@@ -19,50 +22,68 @@ import { ButtonModule } from 'primeng/button';
     InputTextModule,
     ButtonModule
   ],
+  providers: [
+    HttpErrorPrinterService
+  ],
   templateUrl: './driver-form.component.html',
   styleUrl: './driver-form.component.scss'
 })
 export class DriverFormComponent implements OnInit{
 
   driverForm: FormGroup;
-  error_messages: Message[] = [];
+  driver: Driver | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService, 
     private dialogRef: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private driverService: DriverService,
+    private httpErrorPrinter: HttpErrorPrinterService
   ) { 
     this.driverForm = this.fb.group({
+      id: [''],
       name: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
-    this.clearMessages();
+    this.driver = this.config.data.driver;
+    if (this.driver) {
+      this.driverForm.patchValue(this.driver);
+    }
   }
 
   submitForm() {
     if (this.driverForm.valid) {
-      this.driverService.createDriver(this.driverForm.value).subscribe({
-        next: (driver) => {
-          console.log('Driver created:', driver);
-          this.dialogRef.close(driver);
-        },
-        error: (error) => {
-          console.error('Error creating driver:', error);
-          this.error_messages = error.error.errors;
-          this.messageService.add({severity:'error', summary:'Error', detail: error});
-        }
-      });
+      if (this.driver) {
+        console.log('Updating driver:', this.driverForm.value);
+        // Update the driver
+        this.driverService.updateDriver(this.driver?.id!, this.driverForm.value).subscribe({
+          next: (driver) => {
+            console.log('Driver updated:', driver);
+            this.dialogRef.close(driver);
+          },
+          error: (err: HttpErrorResponse) => {
+            this.httpErrorPrinter.printHttpError(err);
+          }
+        });
+        
+      }
+      else {
+        // Create a new driver
+        console.log('Creating driver:', this.driverForm.value);
+        this.driverService.createDriver(this.driverForm.value).subscribe({
+          next: (driver) => {
+            console.log('Driver created:', driver);
+            this.dialogRef.close(driver);
+          },
+          error: (err: HttpErrorResponse) => {
+            this.httpErrorPrinter.printHttpError(err);
+          }
+        });
+      }
     }
   }
-
-  clearMessages() {
-    this.error_messages = [];
-  }
-
 
 
 }
