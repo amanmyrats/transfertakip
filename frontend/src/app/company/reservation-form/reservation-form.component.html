@@ -16,23 +16,225 @@
         </ng-template>
 </p-dropdown>
 
-    <!-- Create a elegant nice form for my Reservation model using primeng form components,include all fields above -->
-    <div class="p-grid p-fluid">
-        <div class="p-col-12 p-md-6 p-lg-4">
-            <div class="p-inputgroup">
-                <span class="p-float-label">
-                    <input id="amount" pInputText type="text" pInputNumber formControlName="amount" />
-                    <label for="amount">Amount</label>
-                </span>
-            </div>
-        </div>
-    </div>
+<p-selectButton 
+        [options]="isNakitOptions" 
+        formControlName="is_nakit" 
+        optionLabel="label" 
+        optionValue="value" />
+
     
+<p-floatLabel>
+    <p-inputNumber 
+    formControlName="amount" 
+    inputId="minmaxfraction" 
+    mode="decimal" 
+    [minFractionDigits]="0" 
+    [maxFractionDigits]="2" /> 
+    <label for="number-input">Amount</label>
+</p-floatLabel>
+            
+    <p-selectButton 
+    [options]="currencies" 
+    formControlName="currency" 
+    optionLabel="code" 
+    optionValue="id" />
+    
+
+    
+<p-dropdown 
+[options]="transferTypes"
+formControlName="transfer_type"
+optionLabel="label"
+optionValue="value"
+[filter]="true"
+filterBy="name" 
+[showClear]="true"
+placeholder="Select a Transfer Type">
+    <ng-template let-transferType pTemplate="item">
+        <div class="flex align-items-center gap-2">
+            <div>{{ transferType.label }}</div>
+        </div>
+    </ng-template>
+</p-dropdown>
+
+
+    
+<p-dropdown 
+[options]="carTypes"
+formControlName="car_type"
+optionLabel="name"
+optionValue="id"
+[filter]="true"
+filterBy="name" 
+[showClear]="true"
+placeholder="Select a Car Type">
+    <ng-template let-carType pTemplate="item">
+        <div class="flex align-items-center gap-2">
+            <div>{{ carType.name }}</div>
+        </div>
+    </ng-template>
+</p-dropdown>
+
+<p-floatLabel>
+    <p-calendar 
+        formControlName="reservation_date" 
+        [showIcon]="true" 
+        inputId="icondisplay" 
+        dateFormat="yy-mm-dd" 
+        dataType="string"
+        />
+    <label for="reservationDate">Reservation Date</label>
+</p-floatLabel>
+
+
+<p-floatLabel>
+    <p-calendar 
+        formControlName="transfer_date" 
+        [showIcon]="true" 
+        inputId="icondisplay" 
+        dateFormat="yy-mm-dd" 
+        dataType="string"
+        />
+    <label for="TransferDate">Transfer Date</label>
+</p-floatLabel>
+
+<p-calendar 
+    inputId="calendar-timeonly" 
+    formControlName="transfer_time" 
+    dataType="string"
+    [timeOnly]="true" />
+
+
+    <p-floatLabel>
+        <input pInputText id="flightNumber" formControlName="flight_number" />
+        <label for="flightNumber">Flight Number</label>
+    </p-floatLabel>
+
+    
+
+    <p-floatLabel>
+        <input pInputText id="passengerName" formControlName="passenger_name" />
+        <label for="passengerName">Passenger Name</label>
+    </p-floatLabel>
+
+
+    <p-floatLabel>
+        <p-inputNumber 
+    formControlName="passenger_count" 
+    [showButtons]="true" 
+    buttonLayout="horizontal" 
+    spinnerMode="horizontal" 
+    inputId="horizontal"
+    decrementButtonClass="p-button-secondary"
+    incrementButtonClass="p-button-secondary" 
+    incrementButtonIcon="pi pi-plus" 
+    decrementButtonIcon="pi pi-minus" 
+    min="1"
+    max="20"
+     />
+     <label for="passengerName">Passenger Count</label>
+    </p-floatLabel>
+
+
+    <textarea 
+    rows="5"
+    cols="30" 
+    pInputTextarea 
+    formControlName="note">
+</textarea>
+
+
+<p-floatLabel>
+    <input pInputText id="pickUpShort" formControlName="pickup_short" />
+    <label for="pickUpShort">Pickup Short</label>
+</p-floatLabel>
+
+
+<p-floatLabel>
+    <input pInputText id="pickUpFull" formControlName="pickup_full" />
+    <label for="pickUpFull">Pickup Full</label>
+</p-floatLabel>
+
+
+<p-floatLabel>
+    <input pInputText id="destinationShort" formControlName="dest_short" />
+    <label for="destinationShort">Destination Short</label>
+</p-floatLabel>
+
+
+<p-floatLabel>
+    <input pInputText id="destinationFull" formControlName="dest_full" />
+    <label for="destinationFull">Destination Full</label>
+</p-floatLabel>
+
+
+
+<p-selectButton 
+        [options]="isMyDriverOptions" 
+        formControlName="is_my_driver" 
+        optionLabel="label" 
+        optionValue="value" />
+
+
+        <p-dropdown 
+        [options]="cars"
+        formControlName="car"
+        optionLabel="plate"
+        optionValue="id"
+        [filter]="true"
+        filterBy="plate" 
+        [showClear]="true"
+        placeholder="Select a Car">
+            <ng-template let-car pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ car.plate }}</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+        
+
+        
+    
+<p-dropdown 
+[options]="taserons"
+formControlName="taseron"
+optionLabel="name"
+optionValue="id"
+[filter]="true"
+filterBy="name" 
+[showClear]="true"
+placeholder="Select a Taşeron">
+    <ng-template let-taseron pTemplate="item">
+        <div class="flex align-items-center gap-2">
+            <div>{{ taseron.name }}</div>
+        </div>
+    </ng-template>
+</p-dropdown>
+
+
+<p-floatLabel>
+    <p-inputNumber 
+    formControlName="taseron_hakedis" 
+    inputId="minmaxfraction" 
+    mode="decimal" 
+    [minFractionDigits]="0" 
+    [maxFractionDigits]="2" /> 
+    <label for="number-input">Taşeron komisyonu</label>
+</p-floatLabel>
+
+
+<p-selectButton 
+[options]="currencies" 
+formControlName="taseron_currency" 
+optionLabel="code" 
+optionValue="id" />
+
+
     <!-- submit button here -->
     <div class="p-grid p-fluid">
         <div class="p-col-12 p-md-6 p-lg-4">
             <button pButton type="submit" class="p-button-success">Submit</button>
         </div>
     </div>
-    
+    <p-messages></p-messages>
     </form>

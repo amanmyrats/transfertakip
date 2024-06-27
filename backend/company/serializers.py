@@ -29,6 +29,7 @@ class ReservationModelSerializer(CreateModelSerializer):
     class Meta:
         model = Reservation
         fields = '__all__'
+        read_only_fields = ('company',)
 
 
 class CompanyModelSerializer(CreateModelSerializer):

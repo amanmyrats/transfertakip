@@ -25,44 +25,34 @@ def custom_exception_handler(exc, context):
     # if response is not None:
         # Check for specific exceptions (optional)
 
-    if isinstance(exc, ValidationError):
-        print('inside isinstance(exc, ValidationError):')
-        # Handle validation errors gracefully
-        errors = exc.detail
-        errors['HATA'] = 'Girilen bilgilerde hata(lar) var. Lütfen bilgileri kontrol edin.'
-        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-    elif isinstance(exc, IntegrityError):
-        print('inside isinstance(exc, IntegrityError):')
-        # Handle database integrity errors
-        # errors = exc.detail
-        print(exc)
-        errors = {'HATA': 'Bir hata oluştu. Lütfen bilgileri kontrol edin.'}  # User-friendly message
-        errors['Hata detayı'] = exc.args[0]  # Actual error message
-        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-    elif isinstance(exc, NotFound):
-        print('inside isinstance(exc, NotFound)')
-        # Handle database integrity errors
-        # errors = exc.detail
-        print(exc)
-        errors = {'HATA': 'Böyle bir bilgi bulunamadı.'}  # User-friendly message
-        errors['Hata detayı'] = exc.args[0]  # Actual error message
-        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        print('inside else:')
-        # Handle other exceptions generically
-        # You might want to log the exception here for debugging
-        if response.data:
-            return Response({'error': str(response.data) + str(response.get('status_text'))}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    if response:
+        if isinstance(exc, ValidationError):
+            print('inside isinstance(exc, ValidationError):')
+            # Handle validation errors gracefully
+            errors = exc.detail
+            errors['HATA'] = 'Girilen bilgilerde hata(lar) var. Lütfen bilgileri kontrol edin.'
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        elif isinstance(exc, IntegrityError):
+            print('inside isinstance(exc, IntegrityError):')
+            # Handle database integrity errors
+            # errors = exc.detail
+            print(exc)
+            errors = {'HATA': 'Bir hata oluştu. Lütfen bilgileri kontrol edin.'}  # User-friendly message
+            errors['Hata detayı'] = exc.args[0]  # Actual error message
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        elif isinstance(exc, NotFound):
+            print('inside isinstance(exc, NotFound)')
+            # Handle database integrity errors
+            # errors = exc.detail
+            print(exc)
+            errors = {'HATA': 'Böyle bir bilgi bulunamadı.'}  # User-friendly message
+            errors['Hata detayı'] = exc.args[0]  # Actual error message
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'error': str(exc)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    # If an existing handler returned a response, modify it as needed
-    # (optional)
-
-    # Ensure response is JSON, set status code (if not already set)
-    # print('response')
-    # print(response)
-    # response.data = {'error': response.data.get('detail', 'An error occurred.')}
-    # response.status_code = response.status_code or status.HTTP_500_INTERNAL_SERVER_ERROR
-
-    # return response
+            print('inside else:')
+            # Handle other exceptions generically
+            # You might want to log the exception here for debugging
+            if response:
+                return Response({'error': str(response.data) + str(response.get('status_text'))}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            else:
+                return Response({'error': str(exc)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

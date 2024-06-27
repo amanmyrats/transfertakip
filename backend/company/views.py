@@ -1,7 +1,5 @@
 from django.shortcuts import render
 
-from rest_framework.exceptions import ValidationError
-from rest_framework.views import exception_handler
 from rest_framework.permissions import AllowAny
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -17,7 +15,6 @@ from .serializers import (
     CarModelSerializer, DefaultExpenseTypeModelSerializer,
     ExpenseTypeModelSerializer, ExpenseModelSerializer,
     DriverModelSerializer, SubscriptionModelSerializer
-
 )
 from .models import (
     Reservation, Company, SubscriptionType, Subscription, 
@@ -28,10 +25,17 @@ from .serializers import (
     ReservationModelSerializer, CompanyModelSerializer, 
     SubscriptionTypeModelSerializer
 )
+from .filtersets import ReservationFilterSet
+
 
 class ReservationModelViewSet(viewsets.ModelViewSet):
     queryset = Reservation.objects.all()
     serializer_class = ReservationModelSerializer
+    filterset_class = ReservationFilterSet
+    search_fields = ('flight_number', 'passenger_name', 'passenger_count', 'note',
+                     'pickup_short','pickup_full','dest_short','dest_full',
+                    'my_driver__name','car__plate',
+        )
 
 
 class CompanyModelViewSet(viewsets.ModelViewSet):

@@ -10,8 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActionButtonsComponent } from '../../components/action-buttons/action-buttons.component';
-import { FilterSearchToolbarComponent } from '../../components/filter-search-toolbar/filter-search-toolbar.component';
 import { HttpErrorPrinterService } from '../../services/http-error-printer.service';
+import { SharedToolbarComponent } from '../../components/shared-toolbar/shared-toolbar.component';
 
 @Component({
   selector: 'app-driver-list',
@@ -23,7 +23,7 @@ import { HttpErrorPrinterService } from '../../services/http-error-printer.servi
     InputTextModule, 
     ConfirmDialogModule,
     ActionButtonsComponent, 
-    FilterSearchToolbarComponent
+    SharedToolbarComponent
   ],
   providers: [
     DialogService,

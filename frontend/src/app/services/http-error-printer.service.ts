@@ -12,6 +12,8 @@ export class HttpErrorPrinterService {
   ) {} // Inject messageService and optional translateService
 
   public printHttpError(err: any): void {
+    console.log("HttpErrorPrinterService.printHttpError()");
+    console.log(err);
     this.messageService.clear();
     if (err.error) {
       for (const [key, value] of Object.entries(err.error)) {

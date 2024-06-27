@@ -14,8 +14,8 @@ export class ReservationService {
   ) { 
   }
 
-  getReservations(): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${env.baseUrl}${env.apiV1}${this.endPoint}`);
+  getReservations(queryString: string): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${env.baseUrl}${env.apiV1}${this.endPoint}${queryString}`);
   }
 
   getReservation(id: number): Observable<Reservation> {
@@ -26,15 +26,15 @@ export class ReservationService {
     return this.http.post<Reservation>(`${env.baseUrl}${env.apiV1}${this.endPoint}`, reservation);
   }
 
-  updateReservation(reservation: Reservation): Observable<Reservation> {
-    return this.http.put<Reservation>(`${env.baseUrl}${env.apiV1}${this.endPoint}${reservation.id}/`, reservation);
+  updateReservation(id: string, reservation: Reservation): Observable<Reservation> {
+    return this.http.put<Reservation>(`${env.baseUrl}${env.apiV1}${this.endPoint}${id}/`, reservation);
   }
 
-  deleteReservation(id: number): Observable<any> {
+  deleteReservation(id: string): Observable<any> {
     return this.http.delete(`${env.baseUrl}${env.apiV1}${this.endPoint}${id}/`);
   }
 
-  getTransferTypeChoices(){
+  getTransferTypes(){
     return [
       { value: 'ARR', label: 'Arrival' },
       { value: 'DEP', label: 'Departure' },

@@ -1,0 +1,58 @@
+<form [formGroup]="filterSearchForm" (ngSubmit)="search()">
+    <!-- <div class="p-grid"> -->
+        <div class="p-d-flex p-justify-content-center p-align-items-center">
+            <!-- <p-calendar formControlName="transfer_date" 
+            placeholder="Transfer tarihi" dateFormat="yy-mm-dd"></p-calendar> -->
+
+            <!-- nice calendar picker here -->
+
+
+        <div class="p-col-12 p-md-3">
+            <p-dropdown 
+                [options]="agencies" 
+                formControlName="agency" 
+                optionLabel="name" 
+                optionValue="id"
+                placeholder="Acente seçiniz" 
+                (onChange)="search()" 
+                showClear="true"
+                />
+        <!-- </div> -->
+        <!-- <div class="p-col-12 p-md-3"> -->
+            <p-dropdown 
+                [options]="taserons" 
+                formControlName="taseron" 
+                optionLabel="name" 
+                optionValue="id"
+                placeholder="Taşeron seçiniz" 
+                (onChange)="search()"
+                showClear="true"
+                />
+        <!-- </div> -->
+        <!-- <div class="p-col-12 p-md-3"> -->
+            <p-dropdown 
+                [options]="drivers" 
+                formControlName="driver" 
+                optionLabel="name" 
+                optionValue="id"
+                placeholder="Sürücü seçiniz" 
+                (onChange)="search()"
+                showClear="true"
+                />
+        <!-- </div> -->
+        <!-- <div class="p-col-12 p-md-3"> -->
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText placeholder="Search" formControlName="search" />
+            </span>
+            <button pButton type="submit" label="Search" 
+            icon="pi pi-search" class="p-button-raised p-button-rounded p-button-success">
+        </button>
+        <!-- add clear search icon with flask and search icon -->
+        <button pButton type="button" label="Clear" 
+            icon="pi pi-times" class="p-button-raised p-button-rounded p-button-danger"
+            (click)="clearSearch()">
+        </button>
+        </div>
+    </div>
+</form>

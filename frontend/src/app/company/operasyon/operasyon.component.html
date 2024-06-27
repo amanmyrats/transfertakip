@@ -1,3 +1,13 @@
+<app-filter-search 
+    [agencies]="agencies"
+    [taserons]="taserons"
+    [drivers]="drivers"
+    (searchEmitter)="search($event)"
+    (getAgenciesEmitter)="getAgencies()"
+    (getTaseronsEmitter)="getTaserons()"
+    (getDriversEmitter)="getDrivers()"
+    >
+</app-filter-search>
 <p-table [value]="reservations" styleClass="p-datatable-striped p-datatable-gridlines" [rows]="20" [loading]="loading" [rowHover]="true"  >
     <ng-template pTemplate="header">
         <tr>

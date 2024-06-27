@@ -6,7 +6,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ToolbarModule } from 'primeng/toolbar';
 
 @Component({
-  selector: 'app-filter-search-toolbar',
+  selector: 'app-shared-toolbar',
   standalone: true,
   imports: [
     ToolbarModule, 
@@ -14,10 +14,10 @@ import { ToolbarModule } from 'primeng/toolbar';
     SplitButtonModule,
     InputTextModule, 
   ],
-  templateUrl: './filter-search-toolbar.component.html',
-  styleUrl: './filter-search-toolbar.component.scss'
+  templateUrl: './shared-toolbar.component.html',
+  styleUrl: './shared-toolbar.component.scss'
 })
-export class FilterSearchToolbarComponent implements OnInit {
+export class SharedToolbarComponent implements OnInit {
   @Output() createEmitter: EventEmitter<any> = new EventEmitter();
   @Output() searchEmitter: EventEmitter<any> = new EventEmitter();
   items: MenuItem[] | undefined;

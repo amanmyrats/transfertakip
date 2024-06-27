@@ -1,3 +1,17 @@
+<app-filter-search 
+    [agencies]="agencies"
+    [taserons]="taserons"
+    [drivers]="drivers"
+    (searchEmitter)="search($event)"
+    (getAgenciesEmitter)="getAgencies()"
+    (getTaseronsEmitter)="getTaserons()"
+    (getDriversEmitter)="getDrivers()"
+    >
+</app-filter-search>
+<app-shared-toolbar 
+    (createEmitter)="createObj()" 
+    (searchEmitter)="search()">
+</app-shared-toolbar>
 <p-table [value]="reservations" styleClass="p-datatable-striped p-datatable-gridlines" [rows]="20" [loading]="loading" [rowHover]="true"  >
         <ng-template pTemplate="header">
             <tr>
@@ -10,6 +24,7 @@
                 <th>Destination</th>
                 <th>Driver</th>
                 <th>Amount</th>
+                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-reservation>
@@ -27,6 +42,16 @@
                         {{reservation.taseron?.name}}
                 </td>
                 <td>{{reservation.amount}}</td>
+                <td>
+                    <app-action-buttons 
+                        [obj]="reservation" 
+                        (updateEmitter)="updateObj($event)" 
+                        (deleteEmitter)="deleteObj($event)">
+                    </app-action-buttons>
+                </td>
             </tr>
         </ng-template>
     </p-table>
+
+<p-toast [life]="10000"/>
+<p-confirmDialog />

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'rest_framework',
+    'django_filters',
 
     'authentication',
 
@@ -160,6 +161,10 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'EXCEPTION_HANDLER': 'core.utils.custom_exception_handler',
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend', 
+        'rest_framework.filters.SearchFilter',
+    ),
 }
 
 SIMPLE_JWT = {
