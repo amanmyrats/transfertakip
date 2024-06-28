@@ -16,7 +16,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
       Authorization: `Bearer ${authToken}`
     }
   });
-  console.log('Added token to request');
+  console.log('Added access token to request');
   console.log('Bearer: ' + authToken);
   console.log(authReq);
 
@@ -28,9 +28,34 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
         if (err.status === 401) {
           // Specific handling for unauthorized errors         
           console.error('Inside jwt.interceptor: Unauthorized request:', err);
+
+          // Check for refresh method in AuthService
+          // if (authService.refreshToken && !!authToken) {
+          //   console.log("Inside: interceptor -> authService.refreshToken")
+          //   return authService.refreshToken().pipe(
+          //     switchMap((response) => {
+          //       if (response && response.access) {
+          //         // Update access token
+          //         authService.setAccessToken(response.access);
+          //         // Retry with new access token
+          //         const refreshedReq = req.clone({
+          //           setHeaders: { Authorization: `Bearer ${response.access}` },
+          //         });
+          //         return next(refreshedReq);
+          //       }
+          //       return throwError('Refresh token failed'); // Handle refresh failure
+          //     })
+          //   );
+          // } else {
+          //     // No refresh method, handle expired token (e.g., logout)
+          //     authService.logout();
+          //     return throwError('Unauthorized: Token may have expired');
+          // }
+
         } else {
           // Handle other HTTP error codes
           console.error('HTTP error:', err);
+
         }
       } else {
         // Handle non-HTTP errors

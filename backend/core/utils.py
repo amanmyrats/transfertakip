@@ -52,7 +52,11 @@ def custom_exception_handler(exc, context):
             print('inside else:')
             # Handle other exceptions generically
             # You might want to log the exception here for debugging
+            print('response:', response)
+            print('dir(response):', dir(response))
+            print('exc:', exc)
+            print('context:', context)
             if response:
-                return Response({'error': str(response.data) + str(response.get('status_text'))}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'error': str(response.data) + str(response.get('status_text'))}, status=response.status_code)
             else:
                 return Response({'error': str(exc)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

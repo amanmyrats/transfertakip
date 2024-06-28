@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { map, switchMap, catchError, finalize } from 'rxjs/operators';
 import { environment as env } from '../../environments/environment';
 import { Component, Inject } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
@@ -12,15 +12,20 @@ import { CommonModule, DOCUMENT } from '@angular/common';
 export class AuthService {
 
   private baseUrl = env.baseUrl;
-  private refreshInProgress = false;
   private endPoint = 'auth/'
+  private refreshInProgress = false;
+
+  private accessTokenSubject: BehaviorSubject<any> = new BehaviorSubject<string>('');
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(
     private http: HttpClient, 
     
-  ) { }
+  ) { 
+    this.accessTokenSubject.next(this.currentAccessToken);
+    this.refreshTokenSubject.next(this.currentRefreshToken);
+  }
 
-  // private accessTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   login(email: string, password: string): Observable<boolean> {
     return this.http.post<any>(`${this.baseUrl}${this.endPoint}api/token/`, { email, password })
@@ -29,41 +34,60 @@ export class AuthService {
           if (response && response.access) {
             localStorage.setItem('accessToken', response.access);
             localStorage.setItem('refreshToken', response.refresh);
-            // this.accessTokenSubject.next(response.access);
+            this.accessTokenSubject.next(response.access);
+            this.refreshTokenSubject.next(response.refresh);
             return true;
           }
           return false;
         })
       );
   }
+  // refreshToken() {
+  //   return this.http.post<any>(
+  //     `${this.baseUrl}${this.endPoint}api/token/refresh/`, 
+  //     { refresh: this.currentRefreshToken });
+  // }
 
   refreshToken(): Observable<any> {
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (refreshToken) {
-      return this.http.post<any>(`${this.baseUrl}${this.endPoint}api/token/refresh/`, { refresh: refreshToken })
-        .pipe(
-          map(response => {
-            if (response && response.access) {
-              localStorage.setItem('accessToken', response.access);
-              // this.accessTokenSubject.next(response.access);
-            }
-            return response;
-          }),
-          catchError(error => {
-            this.logout();
-            throw error;
-          })
-        );
-    } else {
-      this.logout();
-      return new Observable(observer => observer.error('No refresh token found'));
-    }
+    console.log('inside: authService.refreshToken()')
+    return this.refreshTokenSubject.pipe(
+      switchMap(refreshToken => {
+        console.log('refreshToken: ' + refreshToken)
+        console.log('this.refreshInProgress: ' + this.refreshInProgress)
+        if (!refreshToken || this.refreshInProgress) {
+          return of(null);
+        }
+        this.refreshInProgress = true;
+        console.log("Sending refresh token.")
+        return this.http.post<any>(
+          `${this.baseUrl}${this.endPoint}api/token/refresh/`, 
+          { refresh: refreshToken })
+          .pipe(
+            // Use map operator within the projection function
+            map(response => {
+              if (response && response.access) {
+                localStorage.setItem('accessToken', response.access);
+                this.refreshTokenSubject.next(response.refresh);
+              }
+              return response;
+            }),
+            catchError(error => {
+              this.logout();
+              throw error;
+            }),
+            finalize(() => {
+              this.refreshInProgress = false;
+            })
+          );
+      })
+    );
   }
 
   logout(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    // this.accessTokenSubject.next('');
+    this.accessTokenSubject.next('');
+    this.refreshTokenSubject.next('');
   }
 
   public get currentAccessToken(): string | null {
@@ -72,9 +96,20 @@ export class AuthService {
     // return this.accessTokenSubject.getValue();
   }
 
-  // public get accessTokenChanges(): Observable<string> {
-  //   return this.accessTokenSubject.asObservable();
-  // }
+  setAccessToken(accessToken: string): void {
+    return localStorage.setItem('accessToken', accessToken);
+  }
+
+  
+  public get currentRefreshToken(): string | null {
+    return localStorage.getItem('refreshToken');
+    // Access the current value using getValue()
+    // return this.refreshTokenSubject.getValue();
+  }
+
+  public get accessTokenChanges(): Observable<string> {
+    return this.accessTokenSubject.asObservable();
+  }
 
   isLoggedIn(): boolean {
     return !!this.currentAccessToken;
